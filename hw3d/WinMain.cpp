@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <iostream>
+#include <sstream>
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -9,7 +10,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage( 69 );
 		break;
 	case WM_KEYDOWN:
-		if (wParam == 'F') 
+		if (wParam == 'D') 
 		{
 			SetWindowText(hWnd, "Respects");
 		}
@@ -20,6 +21,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			SetWindowText(hWnd, "Wow");
 		}
 		break;
+	case WM_CHAR:
+		{
+			static std::string title;
+			title.push_back((char)wParam);
+			SetWindowText(hWnd, title.c_str());
+		}
+		break;
+	case WM_LBUTTONDOWN:
+	{
+		POINTS pt = MAKEPOINTS(lParam);
+		std::ostringstream oss;
+		oss << "(" << pt.x << "," << pt.y << ")";
+		SetWindowText(hWnd, oss.str().c_str());
+	}
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
